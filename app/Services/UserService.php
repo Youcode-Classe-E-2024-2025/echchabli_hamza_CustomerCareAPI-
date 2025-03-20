@@ -1,5 +1,6 @@
 <?php
 
+namespace App\Services;
 
 use App\Repositories\UserRepo;
 use Illuminate\Support\Facades\Auth;
@@ -9,7 +10,7 @@ class UserService {
 
     protected $userRepository;
 
-    public function __construct(UserRepository $userRepository)
+    public function __construct(UserRepo $userRepository)
     {
         $this->userRepository = $userRepository;
     }
@@ -26,7 +27,7 @@ class UserService {
 
         } catch (\Exception $e) {
            
-            
+
             return [
                 'success' => false,
                 'message' => 'Failed to register user. Please try again.',
@@ -41,37 +42,59 @@ class UserService {
     public function login(array $userData)
     {
         try {
+           
             if (Auth::attempt($userData)) {
-                
+
+
                 $user = Auth::user();
-
+    
                 $token = $user->createToken('authToken')->plainTextToken;
-
+    
                 return [
-                      'success' => true,
-                'token' => $token,
-                 'user' => $user,
+                    'success' => true,
+                      'token' => $token,
+                    'user' => $user,
                 ];
             }
-
+    
             return [
-                 'success' => false,
-              'message' => 'Invalid credentials.',
+                'success' => false,
+                'message' => 'Invalid credentials.',
             ];
 
-
         } catch (\Exception $e) {
-
-
-
+        
             return [
-            'success' => false,
-            'message' => 'Failed to log in. Please try again.',
-            'error' => $e->getMessage(), 
-];
+                'success' => false,
+                'message' => 'Failed to log in. Please try again.',
+                'error' => $e->getMessage(),
+            ];
         }
     }
     
+
+    public function logout()
+{
+    try {
+      
+        $user = Auth::user();
+
+       
+        $user->currentAccessToken()->delete();
+
+        return [
+            'success' => true,
+            'message' => 'User logged out successfully.',
+        ];
+    } catch (\Exception $e) {
+        
+        return [
+            'success' => false,
+            'message' => 'Failed to log out. Please try again.',
+            'error' => $e->getMessage(),
+        ];
+    }
+}
 
 
 
