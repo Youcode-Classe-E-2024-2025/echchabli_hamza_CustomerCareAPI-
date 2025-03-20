@@ -16,6 +16,7 @@ return new class extends Migration
             $table->text('response');   
             $table->foreignId('ticket_id')->constrained('tickets')->onDelete('cascade');
             $table->foreignId('from_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('to_id')->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });
     }
