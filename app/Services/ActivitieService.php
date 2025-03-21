@@ -14,7 +14,7 @@ class ActivitieService
     }
 
    
-    public function logActivity(int $ticketId, int $userId, string $action)
+    public function addActivity(int $ticketId, int $userId, string $action)
     {
         return $this->activityModel->create([
             'ticket_id' => $ticketId,

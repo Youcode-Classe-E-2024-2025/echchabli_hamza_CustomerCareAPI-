@@ -34,7 +34,7 @@ class TicketController extends Controller
 
         $ticket = $this->ticketService->createTicket($data);
 
-        $this->activityService->logActivity($ticket->id, $request->user()->id, 'created');
+        $this->activityService->addActivity($ticket->id, $request->user()->id, 'created');
 
         return response()->json([
             'message' => 'Ticket created successfully',
@@ -71,7 +71,7 @@ class TicketController extends Controller
 
     if ($assigned) {
 
-        $this->activityService->logActivity($ticketId, $request->user()->id, 'assingned');
+        $this->activityService->addActivity($ticketId, $request->user()->id, 'assingned');
         return response()->json([
             'message' => 'Ticket assigned to agent successfully',
         ]);
@@ -95,7 +95,7 @@ class TicketController extends Controller
 
         if ($updated) {
 
-            $this->activityService->logActivity($ticket->id, $request->user()->id, 'status updated');
+            $this->activityService->addActivity($ticket->id, $request->user()->id, 'status updated');
             return response()->json([
                 'message' => 'Ticket status updated successfully',
             ]);
@@ -117,7 +117,7 @@ class TicketController extends Controller
 
         if ($updated) {
 
-            $this->activityService->logActivity($ticket->id, $request->user()->id, 'progress updated');
+            $this->activityService->addActivity($ticket->id, $request->user()->id, 'progress updated');
 
             return response()->json([
                 'message' => 'Ticket progress updated successfully',
@@ -137,7 +137,7 @@ class TicketController extends Controller
         $deleted = $this->ticketService->deleteTicket($id);
 
         if ($deleted) {
-            $this->activityService->logActivity($ticket->id, $request->user()->id, 'deleted');
+            $this->activityService->addActivity($ticket->id, $request->user()->id, 'deleted');
             return response()->json([
                 'message' => 'Ticket deleted successfully',
             ]);

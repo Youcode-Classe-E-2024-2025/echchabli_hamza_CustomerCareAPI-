@@ -4,7 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TicketController;
-
+use App\Http\Controllers\ResponseController;
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
@@ -39,4 +39,13 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/tickets/client/{clientId}', [TicketController::class, 'getClientTickets']);
     Route::get('/tickets/agent/{agentId}', [TicketController::class, 'getAgentTickets']);
     Route::post('/tickets/{ticketId}/assign', [TicketController::class, 'assign']);
+});
+
+
+Route::middleware('auth:sanctum')->group(function () {
+Route::post('/responses', [ResponseController::class, 'store']);
+Route::get('/responses/ticket/{ticketId}', [ResponseController::class, 'getByTicketId']);
+Route::get('/responses/from/{fromId}', [ResponseController::class, 'getByFromId']);
+Route::get('/responses/to/{toId}', [ResponseController::class, 'getByToId']);
+
 });
