@@ -38,6 +38,11 @@ class TicketService
         return $ticket;
     }
 
+    public function getAllT(){
+        $ticket = $this->ticketModel::All();
+        return $ticket;
+    }
+
 
     public function assignToAgent(int $id , int $agentId){
 

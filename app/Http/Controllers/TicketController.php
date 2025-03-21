@@ -21,14 +21,35 @@ class TicketController extends Controller
         
     }
 
+
+    /**
+     * @OA\Post(
+     *     path="/api/tickets",
+     *     summary="Create a new ticket",
+     *     tags={"Tickets"},
+     *     security={{"sanctum": {}}},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"title", "description", "owner_id"},
+     *             @OA\Property(property="title", type="string", example="Sample Ticket Title"),
+     *             @OA\Property(property="description", type="string", example="Sample Ticket Description"),
+     *             @OA\Property(property="owner_id", type="integer", example=1)
+     *         )
+     *     ),
+     *     @OA\Response(response=201, description="Ticket created successfully",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Ticket created successfully"),
+     *             @OA\Property(property="ticket", type="object")
+     *         )
+     *     ),
+     *     @OA\Response(response=422, description="Validation error")
+     * )
+     */
     
     public function store(ticketStoreRequest $request)
     {
-        // $data = $request->validate([
-        //     'title' => 'required|string|max:255',
-        //     'description' => 'required|string',
-        //     'owner_id' => 'required|exists:users,id',
-        // ]);
+        
 
         $data = $request->validated();
 
@@ -43,6 +64,28 @@ class TicketController extends Controller
     }
 
 
+
+     /**
+     * @OA\Get(
+     *     path="/api/tickets/{id}",
+     *     summary="Get a ticket by ID",
+     *     tags={"Tickets"},
+     *     security={{"sanctum": {}}},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(response=200, description="Ticket retrieved successfully",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Ticket retrieved successfully"),
+     *             @OA\Property(property="ticket", type="object")
+     *         )
+     *     ),
+     *     @OA\Response(response=404, description="Ticket not found")
+     * )
+     */
     public function getOneTicket(int $id){
         $ticket = $this->ticketService->getOneTicket($id);
         if ($ticket) {
@@ -58,7 +101,33 @@ class TicketController extends Controller
 
 
 
-
+ /**
+     * @OA\Post(
+     *     path="/api/tickets/{ticketId}/assign",
+     *     summary="Assign ticket to an agent",
+     *     tags={"Tickets"},
+     *     security={{"sanctum": {}}},
+     *     @OA\Parameter(
+     *         name="ticketId",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"agent_id"},
+     *             @OA\Property(property="agent_id", type="integer", example=1)
+     *         )
+     *     ),
+     *     @OA\Response(response=200, description="Ticket assigned successfully",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Ticket assigned to agent successfully")
+     *         )
+     *     ),
+     *     @OA\Response(response=404, description="Ticket not found or assignment failed")
+     * )
+     */
     
 
     public function assign(Request $request, int $ticketId)
@@ -83,6 +152,33 @@ class TicketController extends Controller
 }
 
 
+    /**
+     * @OA\Post(
+     *     path="/api/tickets/{id}/status",
+     *     summary="Update ticket status",
+     *     tags={"Tickets"},
+     *     security={{"sanctum": {}}},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"status"},
+     *             @OA\Property(property="status", type="string", example="open")
+     *         )
+     *     ),
+     *     @OA\Response(response=200, description="Ticket status updated successfully",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Ticket status updated successfully")
+     *         )
+     *     ),
+     *     @OA\Response(response=404, description="Ticket not found or update failed")
+     * )
+     */
 
 
     public function updateStatus(Request $request, int $id)
@@ -107,6 +203,33 @@ class TicketController extends Controller
     }
 
 
+      /**
+     * @OA\Post(
+     *     path="/api/tickets/{id}/progress",
+     *     summary="Update ticket progress",
+     *     tags={"Tickets"},
+     *     security={{"sanctum": {}}},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"progress"},
+     *             @OA\Property(property="progress", type="string", example="inprogress")
+     *         )
+     *     ),
+     *     @OA\Response(response=200, description="Ticket progress updated successfully",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Ticket progress updated successfully")
+     *         )
+     *     ),
+     *     @OA\Response(response=404, description="Ticket not found or update failed")
+     * )
+     */
     public function updateProgress(Request $request, int $id)
     {
         $request->validate([
@@ -131,6 +254,28 @@ class TicketController extends Controller
 
 
 
+    /**
+     * @OA\Delete(
+     *     path="/api/tickets/{id}",
+     *     summary="Delete a ticket",
+     *     tags={"Tickets"},
+     *     security={{"sanctum": {}}},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(response=200, description="Ticket deleted successfully",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Ticket deleted successfully")
+     *         )
+     *     ),
+     *     @OA\Response(response=404, description="Ticket not found or deletion failed")
+     * )
+     */
+
+
 
     public function destroy(int $id)
     {
@@ -149,6 +294,26 @@ class TicketController extends Controller
     }
 
     
+     /**
+     * @OA\Get(
+     *     path="/api/tickets/client/{clientId}",
+     *     summary="Get all tickets for a client",
+     *     tags={"Tickets"},
+     *     security={{"sanctum": {}}},
+     *     @OA\Parameter(
+     *         name="clientId",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(response=200, description="Tickets retrieved successfully",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="tickets", type="array", items=@OA\Items(type="object"))
+     *         )
+     *     ),
+     *     @OA\Response(response=404, description="Tickets not found")
+     * )
+     */
 
 
     public function getClientTickets(int $clientId)
@@ -162,6 +327,27 @@ class TicketController extends Controller
 
 
 
+    /**
+     * @OA\Get(
+     *     path="/api/tickets/agent/{agentId}",
+     *     summary="Get all tickets for an agent",
+     *     tags={"Tickets"},
+     *     security={{"sanctum": {}}},
+     *     @OA\Parameter(
+     *         name="agentId",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(response=200, description="Tickets retrieved successfully",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="tickets", type="array", items=@OA\Items(type="object"))
+     *         )
+     *     ),
+     *     @OA\Response(response=404, description="Tickets not found")
+     * )
+     */
+
     public function getAgentTickets(int $agentId)
     {
         $tickets = $this->ticketService->getAgentTickets($agentId);
@@ -174,6 +360,21 @@ class TicketController extends Controller
     
 
 
+     /**
+     * @OA\Get(
+     *     path="/api/tickets/open",
+     *     summary="Get all tickets with status open",
+     *     tags={"Tickets"},
+     *     security={{"sanctum": {}}},
+     *     @OA\Response(response=200, description="Tickets retrieved successfully",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="tickets", type="array", items=@OA\Items(type="object"))
+     *         )
+     *     )
+     * )
+     */
+
+
     public function getAllStatusOpen()
     {
         $tickets = $this->ticketService->getAllStatusOpen();
@@ -182,4 +383,30 @@ class TicketController extends Controller
             'tickets' => $tickets,
         ]);
     }
+
+
+
+     /**
+     * @OA\Get(
+     *     path="/api/tickets",
+     *     summary="Get all tickets ",
+     *     tags={"Tickets"},
+     *     security={{"sanctum": {}}},
+     *     @OA\Response(response=200, description="Tickets retrieved successfully",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="tickets", type="array", items=@OA\Items(type="object"))
+     *         )
+     *     )
+     * )
+     */
+
+    public function getAllTickets()
+    {
+        $tickets = $this->ticketService->getAllT();
+        return response()->json([
+            'tickets' => $tickets,
+        ]);
+
+    
+}
 }
