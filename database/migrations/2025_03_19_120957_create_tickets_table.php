@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('title');
             $table->text('description');
             $table->enum('status', ['open', 'closed'])->default('open');
+            $table->enum('progress' , ['inprogress' , 'done'])->default('inprogress');
             $table->integer('confirmed')->default(0);
             $table->foreignId('owner_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('agent_id')->nullable()->constrained('users');
