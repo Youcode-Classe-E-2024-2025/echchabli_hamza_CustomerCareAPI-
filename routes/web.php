@@ -2,6 +2,22 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+
+
+
+use App\Http\Controllers\FontController;
+
+Route::get('/{any}', [FontController::class, 'index'])->where('any', '.*');
+
+
+
+
+Route::view('/{any}', 'app')->where('any', '.*');
+
+
+
+
+
+
+
+
