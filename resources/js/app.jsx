@@ -1,28 +1,34 @@
 import './bootstrap.js';
+import '../css/app.css';
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client'; // Use createRoot for React 18
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './components/Home.jsx';
-import About from './components/About.jsx';
+import Dash from './components/Dash.jsx';
 import Products from './components/Products.jsx';
-import Header from './components/Header.jsx'; // Header component for navigation
+import Header from './components/Header.jsx';
+import AuthForm from './components/AuthForm.jsx';
 
 const App = () => {
   return (
     <Router>
-      <Header /> {/* Include the header on all pages */}
+      <Header /> 
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
+        <Route path="/Dash" element={<Dash />} />
         <Route path="/products" element={<Products />} />
+
+        <Route path="/login" element={<AuthForm />} />
       </Routes>
     </Router>
   );
 };
 
-ReactDOM.render(
+// Use createRoot for React 18
+const container = document.getElementById('app');
+const root = createRoot(container);
+root.render(
   <React.StrictMode>
     <App />
-  </React.StrictMode>,
-  document.getElementById('app')
+  </React.StrictMode>
 );

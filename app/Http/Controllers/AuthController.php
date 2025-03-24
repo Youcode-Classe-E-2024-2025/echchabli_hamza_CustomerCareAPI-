@@ -48,13 +48,16 @@ namespace App\Http\Controllers;
         $userData = $request->validated();
         $user = $this->userService->registerUser($userData);
         
+      
         
         if ($user) {
             $token = $user->createToken('YourAppName')->plainTextToken;
             return response()->json([
                 'message' => 'User registered successfully', 
                 'user' => $user ,
-                'token' => $token
+                'token' => $token,
+                'role' => $user->role,
+
             ], 201);
         }
 
