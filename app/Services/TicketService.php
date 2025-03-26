@@ -85,7 +85,13 @@ class TicketService
     
     public function getAgentTickets(int $agentId)
     {
-        return $this->ticketModel->where('agent_id', $agentId)->get()->toArray();
+        return $this->ticketModel
+    ->join('users', 'users.id', '=', 'tickets.owner_id')
+    ->where('tickets.owner_id', $agentId)
+    ->select('tickets.*', 'users.name as agent_name') 
+    ->get()
+    ->toArray();
+
     }
 
     public function getAllStatusOpen()

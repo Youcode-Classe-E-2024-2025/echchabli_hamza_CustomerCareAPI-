@@ -4,7 +4,6 @@ import { Link, useLocation } from 'react-router-dom';
 const Header = () => {
   const location = useLocation();
   
-  // Function to check if the link is active
   const isActive = (path) => {
     return location.pathname === path;
   };

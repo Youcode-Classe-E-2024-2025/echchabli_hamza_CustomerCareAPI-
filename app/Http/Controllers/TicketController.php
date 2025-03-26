@@ -47,23 +47,36 @@ class TicketController extends Controller
      * )
      */
     
-    public function store(ticketStoreRequest $request)
-    {
-        
+     public function store(ticketStoreRequest $request)
+     {
+         try {
+            
+             $data = $request->validated();
+     
+             $ticket = $this->ticketService->createTicket($data);
+              
 
-        $data = $request->validated();
-
-        $ticket = $this->ticketService->createTicket($data);
-
-        $this->activityService->addActivity($ticket->id, $request->user()->id, 'created');
-
-        return response()->json([
-            'message' => 'Ticket created successfully',
-            'ticket' => $ticket,
-        ], 201);
-    }
-
-
+             $this->activityService->addActivity($ticket->id, $data['owner_id'], 'created');
+     
+             
+             return response()->json([
+                 'message' => ' created successfully',
+                 'ticket' => $ticket,
+             ], 201);
+         } catch (\Exception $e) {
+            
+             \Log::error('Error creating ticket: ' . $e->getMessage(), [
+                 'exception' => $e
+             ]);
+     
+             
+             return response()->json([
+                 'message' => '',
+                 'error' => $e->getMessage()
+             ], 500);
+         }
+     }
+     
 
      /**
      * @OA\Get(
@@ -315,15 +328,14 @@ class TicketController extends Controller
      * )
      */
 
-
-    public function getClientTickets(int $clientId)
-    {
-        $tickets = $this->ticketService->getClientTickets($clientId);
-
-        return response()->json([
-            'tickets' => $tickets,
-        ]);
-    }
+     public function getClientTickets(int $clientId)
+     {
+         \Log::info('Authenticated User:', ['user' => $clientId]);
+     
+         $tickets = $this->ticketService->getClientTickets($clientId);
+         return response()->json(['tickets' => $tickets]);
+     }
+     
 
 
 

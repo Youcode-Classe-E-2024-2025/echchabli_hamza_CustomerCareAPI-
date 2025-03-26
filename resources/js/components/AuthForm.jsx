@@ -51,7 +51,9 @@ const AuthForm = () => {
 
       if (endpoint === '/api/register') setActiveTab('login');
 
-      console.log(data.user);
+      // console.log(data.token);
+
+      
       
 
       localStorage.setItem('authToken', data.token);
