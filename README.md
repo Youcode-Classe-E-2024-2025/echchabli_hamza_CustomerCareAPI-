@@ -16,7 +16,7 @@ Tests Unitaires et Fonctionnels
 Clone the repository to your local machine by running the following command:
 
 ```bash
-git clone 
+git clone https://github.com/Youcode-Classe-E-2024-2025/echchabli_hamza_CustomerCareAPI-.git
 cd CustomerCareAPI
 
 ```
