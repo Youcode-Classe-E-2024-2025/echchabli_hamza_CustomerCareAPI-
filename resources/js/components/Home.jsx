@@ -19,6 +19,7 @@ const Home = () => {
     lastPage: 0
   });
 
+
   const fetchOpenTickets = async () => {
     try {
       const response = await fetch('/api/tickets/open', {
@@ -52,6 +53,31 @@ const Home = () => {
     } catch (err) {
       setError(err.message);
       setLoading(false);
+    }
+  };
+  const handleAssignTicket = async () => {
+    setAssigning(true); // Show loading state for the button
+
+    try {
+      // Call the API to assign an agent to the ticket
+      const response = await fetch(`/tickets/${id}/assign`, {
+        method: 'PUT', // Assuming PUT method to update ticket assignment
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ agent_id: 1 }), // Assuming agent ID is 1 for example
+      });
+      const data = await response.json();
+
+      if (response.ok) {
+        setTicket(data.ticket); // Update ticket data with the new agent_id
+      } else {
+        setError(data.message);
+      }
+    } catch (err) {
+      setError('Error assigning the ticket');
+    } finally {
+      setAssigning(false); // Hide loading state
     }
   };
 

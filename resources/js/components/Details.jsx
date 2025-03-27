@@ -4,12 +4,14 @@ import '../../css/details.css';
 
 const Details = () => {
   const { id } = useParams();
-  // console.log(id);
+ 
   
   const [ticket, setTicket] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [agentName, setAgent] = useState('No agent assigned');
   const [assigning, setAssigning] = useState(false);
+  
 
   useEffect(() => {
    
@@ -19,6 +21,8 @@ const Details = () => {
         const data = await response.json();
 
         if (response.ok) {
+          console.log(data.ticket);
+          
           setTicket(data.ticket);  
         } else {
           setError(data.message); 
@@ -33,29 +37,41 @@ const Details = () => {
 
     fetchTicketDetails();
   }, [id]);
-  const handleAssignTicket = async () => {
-    setAssigning(true); // Show loading state for the button
 
+
+  const handleAssignTicket = async () => {
+    // setAssigning(true); 
     try {
-      // Call the API to assign an agent to the ticket
-      const response = await fetch(`/tickets/${id}/assign`, {
-        method: 'PUT', // Assuming PUT method to update ticket assignment
+      
+      const response = await fetch(`/api/tickets/${id}/assign`, {
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
         },
-        body: JSON.stringify({ agent_id: 1 }), // Assuming agent ID is 1 for example
+        body: JSON.stringify({ agent_id: 1 }), 
       });
       const data = await response.json();
 
       if (response.ok) {
-        setTicket(data.ticket); // Update ticket data with the new agent_id
+        
+
+        setTicket((prevTicket) => ({ ...prevTicket, agent_id: id }));
+
+       
+        console.log(data.name);
+        setAgent(data.name)
+        
+       
+
+
       } else {
         setError(data.message);
       }
     } catch (err) {
       setError('Error assigning the ticket');
     } finally {
-      setAssigning(false); // Hide loading state
+      setAssigning(false);
     }
   };
 
@@ -76,8 +92,8 @@ const Details = () => {
    
     <p><strong>Created At:</strong> {new Date(ticket?.created_at).toLocaleDateString()}</p>
    
-    <p><strong>Owner ID:</strong> {ticket?.owner_id}</p>
-    <p><strong>Agent ID:</strong> {ticket?.agent_id || 'No agent assigned'}</p>
+    <p><strong>Owner ID:</strong> {ticket?.owner_name}</p>
+    <p><strong>Agent ID:</strong> {ticket?.agent_id ? agentName : 'No agent assigned'}</p>
 
 
     <button 

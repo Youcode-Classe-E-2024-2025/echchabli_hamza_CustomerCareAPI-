@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Ticket;
 
+use App\Models\User;
 
 class TicketService
 {
@@ -33,10 +34,18 @@ class TicketService
         return false;
     }
 
-    public function getOneTicket(int $id){
-        $ticket = $this->ticketModel->find($id);
-        return $ticket;
+    public function getOneTicket(int $id)
+    {
+        return $this->ticketModel
+            ->join('users', 'tickets.owner_id', '=', 'users.id')
+            ->select([
+                'tickets.*',
+                'users.name as owner_name',
+            ])
+            ->where('tickets.id', $id)
+            ->first();
     }
+    
 
     public function getAllT(){
         $ticket = $this->ticketModel::All();
@@ -49,8 +58,10 @@ class TicketService
 
         $ticket = $this->ticketModel->find($id);
         $ticket->agent_id = $agentId;
-        return $ticket->save();
+        $ticket->save();
+        $res= User::find($agentId);
 
+        return $res->name;
     }
     
     public function updateTicketProgress(int $id, string $progress)
@@ -124,9 +135,7 @@ class TicketService
 {
     $sortDirection = in_array(strtolower($sortDirection), ['asc', 'desc']) ? $sortDirection : 'desc';
 
-    $query = $this->ticketModel
-        ->when($status && $status !== 'all', fn($q) => $q->where('status', $status))
-        ->orderBy('created_at', $sortDirection);
+    $query = $this->ticketModel->when($status && $status !== 'all', fn($q) => $q->where('status', $status))->orderBy('created_at', $sortDirection);
 
     $page = request()->input('page', 1);
     $offset = ($page - 1) * $perPage;

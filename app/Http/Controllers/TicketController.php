@@ -105,6 +105,7 @@ class TicketController extends Controller
             return response()->json([
                 'message' => 'Ticket retrieved successfully',
                 'ticket' => $ticket,
+                
             ], 200);
         }
         return response()->json([
@@ -156,6 +157,7 @@ class TicketController extends Controller
         $this->activityService->addActivity($ticketId, $request->user()->id, 'assingned');
         return response()->json([
             'message' => 'Ticket assigned to agent successfully',
+            'name' => $assigned
         ]);
     }
 
