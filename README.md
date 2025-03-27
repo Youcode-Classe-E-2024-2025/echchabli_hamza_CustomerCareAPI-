@@ -16,7 +16,7 @@ Tests Unitaires et Fonctionnels
 Clone the repository to your local machine by running the following command:
 
 ```bash
-git clone https://github.com/Youcode-Classe-E-2024-2025/CustmerCarApi-belal-allala.git
+git clone 
 cd CustomerCareAPI
 
 ```
