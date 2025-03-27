@@ -98,4 +98,50 @@ class TicketService
     {
         return $this->ticketModel->where('status', 'open')->get()->toArray();
     }
+
+
+
+    // public function getPaginatedTickets($perPage = 3, $status = null, $sortDirection = 'desc')
+    // {
+    //     $query = $this->ticketModel->newQuery();
+    
+    //     if ($status && $status !== 'all') {
+    //         $query->where('status', $status);
+    //     }
+    
+    //     $sortDirection = strtolower($sortDirection);
+    //     if (!in_array($sortDirection, ['asc', 'desc'])) {
+    //         $sortDirection = 'desc';
+    //     }
+    
+    //     // Always sort by created_at
+    //     $query->orderBy('created_at', $sortDirection);
+    
+    //     return $query->paginate($perPage);
+    // }
+
+    public function getPaginatedTickets(int $perPage = 3, ?string $status = null, string $sortDirection = 'desc')
+{
+    $sortDirection = in_array(strtolower($sortDirection), ['asc', 'desc']) ? $sortDirection : 'desc';
+
+    $query = $this->ticketModel
+        ->when($status && $status !== 'all', fn($q) => $q->where('status', $status))
+        ->orderBy('created_at', $sortDirection);
+
+    $page = request()->input('page', 1);
+    $offset = ($page - 1) * $perPage;
+
+    $total =$query->count();
+
+    return [
+        'data' => $query->offset($offset)->limit($perPage)->get(),
+        'current_page' => (int) $page,
+        'per_page' => $perPage,
+        'total' => $total ,
+        'last_page'=> (int) ceil($total / $perPage),
+    ];
+}
+
+    
+
 }

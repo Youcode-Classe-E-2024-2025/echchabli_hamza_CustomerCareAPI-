@@ -412,13 +412,21 @@ class TicketController extends Controller
      * )
      */
 
-    public function getAllTickets()
-    {
-        $tickets = $this->ticketService->getAllT();
-        return response()->json([
-            'tickets' => $tickets,
-        ]);
+     public function getAllTickets(Request $request)
+{
+    $perPage = $request->input('per_page', 3);
+    $status = $request->input('status', null);
+    $sortDirection = $request->input('sort_direction', 'desc'); // 'asc' or 'desc'
 
-    
+    $tickets = $this->ticketService->getPaginatedTickets($perPage, $status, $sortDirection);
+
+    return response()->json([
+        'tickets' => $tickets,
+    ]);
 }
+
+
+
+
+
 }

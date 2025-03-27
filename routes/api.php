@@ -25,10 +25,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
 
 
+Route::post('/tickets/open', [TicketController::class, 'getAllTickets']);
 
-
-Route::get('/tickets/open', [TicketController::class, 'getAllStatusOpen']);
-
+Route::get('/tickets/{id}', [TicketController::class, 'getOneTicket']);
 Route::middleware('auth:sanctum')->group(function () {
    
     Route::post('/tickets', [TicketController::class, 'store']);
@@ -36,7 +35,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/tickets/{id}/status', [TicketController::class, 'updateStatus']);
     Route::put('/tickets/{id}/progress', [TicketController::class, 'updateProgress']);
     Route::delete('/tickets/{id}', [TicketController::class, 'destroy']);
-    Route::get('/tickets/{id}', [TicketController::class, 'getOneTicket']);
+    
     Route::get('/tickets/client/{clientId}', [TicketController::class, 'getClientTickets']);
     Route::get('/tickets/agent/{agentId}', [TicketController::class, 'getAgentTickets']);
     Route::post('/tickets/{ticketId}/assign', [TicketController::class, 'assign']);
