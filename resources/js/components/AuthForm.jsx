@@ -61,7 +61,14 @@ const AuthForm = () => {
     localStorage.setItem('userRole', data.role);
     localStorage.setItem('name', data.user.name);
     localStorage.setItem('email', data.user.email);
-      navigate('/Dash'); 
+    if (data.role=='client') {
+        navigate('/Dash'); 
+    } else {
+
+      navigate('/AgentDash'); 
+      
+    }
+    
     } catch (error) {
       setError(error.message || 'An error occurred');
     }

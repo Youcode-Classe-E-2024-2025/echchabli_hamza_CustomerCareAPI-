@@ -198,7 +198,7 @@
                 "tags": [
                     "Tickets"
                 ],
-                "summary": "Get all tickets with status open",
+                "summary": "Get all tickets ",
                 "operationId": "2fe5c6bcfdcab33ce5d84aba9b921df6",
                 "responses": {
                     "200": {
@@ -448,12 +448,12 @@
             }
         },
         "/api/tickets/{id}/status": {
-            "post": {
+            "put": {
                 "tags": [
                     "Tickets"
                 ],
                 "summary": "Update ticket status",
-                "operationId": "95e8c077cff6e816d4d9a41153461594",
+                "operationId": "0929b36e347eed91c6966a2134273f0c",
                 "parameters": [
                     {
                         "name": "id",

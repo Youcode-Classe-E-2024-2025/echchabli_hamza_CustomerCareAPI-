@@ -12,6 +12,7 @@ const Details = () => {
   const [agentName, setAgent] = useState('No agent assigned');
   const [assigning, setAssigning] = useState(false);
   
+  
 
   useEffect(() => {
    
@@ -49,22 +50,20 @@ const Details = () => {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
         },
-        body: JSON.stringify({ agent_id: 1 }), 
+        body: JSON.stringify({ agent_id:  localStorage.getItem('userId')}), 
       });
       const data = await response.json();
 
       if (response.ok) {
         
 
-        setTicket((prevTicket) => ({ ...prevTicket, agent_id: id }));
+        setTicket((prevTicket) => ({ ...prevTicket, agent_id: data.name[1] ,agent_name: data.name[0] }));
 
        
-        console.log(data.name);
-        setAgent(data.name)
+        console.log(data.name[0]);
+        setAgent(data.name[0])
         
-       
-
-
+        
       } else {
         setError(data.message);
       }
@@ -93,13 +92,13 @@ const Details = () => {
     <p><strong>Created At:</strong> {new Date(ticket?.created_at).toLocaleDateString()}</p>
    
     <p><strong>Owner ID:</strong> {ticket?.owner_name}</p>
-    <p><strong>Agent ID:</strong> {ticket?.agent_id ? agentName : 'No agent assigned'}</p>
+    <p><strong>Agent ID:</strong> {ticket?.agent_id ? ticket?.agent_name : 'No agent assigned'}</p>
 
 
     <button 
         className="assign-button" 
         onClick={handleAssignTicket} 
-        disabled={!!ticket?.agent_id || assigning}
+        disabled={!!ticket?.agent_id || assigning || localStorage.getItem('userRole')=='client'}
       >
         {assigning ? 'Assigning...' : 'Assign Ticket'}
       </button>

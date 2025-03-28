@@ -12,7 +12,7 @@ const MyTickets = ({ clientId  ,token}) => {
       try {
         console.log( `Bearer ${token}`);
         
-        const response = await fetch(`http://127.0.0.1:8000/api/tickets/client/${clientId}`, {
+        const response = await fetch(`http://127.0.0.1:8000/api/tickets/agent/${clientId}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -64,7 +64,7 @@ const MyTickets = ({ clientId  ,token}) => {
         <tbody>
           {tickets.map((ticket) => (
             <tr key={ticket.id}>
-              <td>{ticket.agent_id!=null ? ticket.agent_name : 'empty'}</td>
+              <td>{ticket.agent_name!=null ? ticket.agent_name : 'empty'}</td>
               <td>{ticket.title}</td>
               <td>
                 <span className={`status-badge ${ticket.status.toLowerCase().replace(' ', '-')}`}>
@@ -133,82 +133,28 @@ const Dash = () => {
     }
   };
   
-  // useEffect(() => {
-  //   if (!localStorage.getItem('authToken')) {
-  //     navigate('/login');
-  //   }
-  //   setTickets([
-  //     { id: 1, title: 'Login issue', description: 'Cannot log in', status: 'Open' },
-  //     { id: 2, title: 'Dashboard bug', description: 'Stats not showing', status: 'In Progress' }
-  //   ]);
-  // }, [navigate]);
+
 
   const handleLogout = () => {
     localStorage.clear();
     navigate('/login');
   };
 
-  const Dashboard = () => (
-    <div className="dashboard-content">
-      <h2>Dashboard Overview</h2>
-      <div className="stats">
-        <div className="stat-card">
-          <h3>Open Tickets</h3>
-          <p>{tickets.filter(t => t.status === 'Open').length}</p>
-        </div>
-        <div className="stat-card">
-          <h3>In Progress</h3>
-          <p>{tickets.filter(t => t.status === 'In Progress').length}</p>
-        </div>
-        <div className="stat-card">
-          <h3>Total Tickets</h3>
-          <p>{tickets.length}</p>
-        </div>
-      </div>
-    </div>
-  );
 
-  const AddTicketModal = () => (
-    <div className="modal-overlay">
-      <div className="modal">
-        <div className="modal-header">
-          <h2>Add New Ticket</h2>
-          <button onClick={() => setShowAddTicket(false)} className="close-btn">
-            &times;
-          </button>
-        </div>
-        <form onSubmit={handleAddTicket}>
-          <div className="form-group">
-            <label>Title</label>
-            <input type="text" name="title" required />
-          </div>
-          <div className="form-group">
-            <label>Description</label>
-            <textarea name="description" required></textarea>
-          </div>
-          <div className="form-actions">
-            <button type="button" onClick={() => setShowAddTicket(false)}>
-              Cancel
-            </button>
-            <button type="submit">Submit</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  );
+
 
   return (
     <div className="dashboard-layout">
       <div className="sidebar">
         <div className="sidebar-header">
-          <h3>Ticket System</h3>
+          <h3>agent</h3>
         </div>
         <ul className="sidebar-menu">
           <li
             className={activeTab === 'myTickets' ? 'active' : ''}
             onClick={() => setActiveTab('myTickets')}
           >
-            My Tickets {userData.name +' new' + userData.name }
+            LLLLLLLL {userData.role +' new' + userData.name }
           </li>
           <li
             className={activeTab === 'dashboard' ? 'active' : ''}

@@ -29,6 +29,7 @@ const Header = () => {
               </Link>
             </li>
             <li>
+            {localStorage.getItem('userRole') === "client" ? (
               <Link 
                 to="/Dash" 
                 className={`${isActive('/Dash') 
@@ -38,6 +39,19 @@ const Header = () => {
               >
                 Dashboar
               </Link>
+
+           ) : localStorage.getItem('userRole') === "agent" ? (
+
+              <Link 
+                to="/agentDash" 
+                className={`${isActive('/agentDash') 
+                  ? 'text-white font-medium border-b-2 border-blue-500' 
+                  : 'text-gray-300 hover:text-white'} 
+                  transition duration-200`}
+              >
+                Dashboar
+              </Link>
+                 ) : null}
             </li>
             <li>
               <Link to="/products" className={`${isActive('/products') ? 'text-white font-medium border-b-2 border-blue-500' : 'text-gray-300 hover:text-white'} transition duration-200`}>Product</Link>

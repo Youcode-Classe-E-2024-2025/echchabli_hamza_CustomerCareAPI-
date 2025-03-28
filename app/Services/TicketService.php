@@ -21,29 +21,33 @@ class TicketService
         return $this->ticketModel->create($data);
     }
 
-   
     public function updateTicketStatus(int $id, string $status)
     {
         $ticket = $this->ticketModel->find($id);
-
+    
         if ($ticket) {
             $ticket->status = $status;
-            return $ticket->save();
+            if ($ticket->save()) {
+                return $ticket->refresh(); 
+            }
         }
-
+    
         return false;
     }
+    
 
     public function getOneTicket(int $id)
     {
         return $this->ticketModel
-            ->join('users', 'tickets.owner_id', '=', 'users.id')
-            ->select([
-                'tickets.*',
-                'users.name as owner_name',
-            ])
-            ->where('tickets.id', $id)
-            ->first();
+        ->leftJoin('users as owners', 'tickets.owner_id', '=', 'owners.id')
+        ->leftJoin('users as agents', 'tickets.agent_id', '=', 'agents.id')
+        ->select([
+            'tickets.*',
+            'owners.name as owner_name',
+            'agents.name as agent_name',
+        ])
+        ->where('tickets.id', $id)
+        ->first();
     }
     
 
@@ -61,7 +65,9 @@ class TicketService
         $ticket->save();
         $res= User::find($agentId);
 
-        return $res->name;
+        $this->updateTicketProgress($id , 'inprogress' );
+
+        return [$res->name , $res->id];
     }
     
     public function updateTicketProgress(int $id, string $progress)
@@ -90,7 +96,15 @@ class TicketService
 
     public function getClientTickets(int $clientId)
     {
-        return $this->ticketModel->where('owner_id', $clientId)->get()->toArray();
+        return $this->ticketModel
+        ->where('tickets.owner_id', $clientId)
+        ->leftJoin('users as agents', 'tickets.agent_id', '=', 'agents.id')
+        ->select([
+            'tickets.*',
+            'agents.name as agent_name'
+        ])
+        ->get()
+        ->toArray();
     }
 
     

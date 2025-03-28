@@ -168,7 +168,7 @@ class TicketController extends Controller
 
 
     /**
-     * @OA\Post(
+     * @OA\Put(
      *     path="/api/tickets/{id}/status",
      *     summary="Update ticket status",
      *     tags={"Tickets"},
@@ -206,9 +206,10 @@ class TicketController extends Controller
 
         if ($updated) {
 
-            $this->activityService->addActivity($ticket->id, $request->user()->id, 'status updated');
+            $this->activityService->addActivity($updated->id, $updated->owner_id, 'status updated');
             return response()->json([
                 'message' => 'Ticket status updated successfully',
+                'mlm' => $updated
             ]);
         }
 
