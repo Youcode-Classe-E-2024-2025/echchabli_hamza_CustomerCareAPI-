@@ -1,11 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../../css/Dash.css';
+import { Link } from 'react-router-dom';
+
 
 const MyTickets = ({ clientId  ,token}) => {
   const [tickets, setTickets] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const back = {
+    backgroundColor: '#4CAF50',
+    color: 'white',
+    padding: '10px 20px',
+    border: 'none',
+    borderRadius: '5px',
+    cursor: 'pointer',
+  };
 
   useEffect(() => {
     const fetchTickets = async () => {
@@ -73,12 +84,7 @@ const MyTickets = ({ clientId  ,token}) => {
               </td>
               <td>{ticket.progress}</td>
               <td>
-                <button onClick={() => handleViewTicket(ticket.id)} className="view-ticket-btn">
-                  View
-                </button>
-                <button onClick={() => handleCancelTicket(ticket.id)} className="cancel-ticket-btn">
-                  Cancel
-                </button>
+                 <Link className='status' style={back} to={`/details/${ticket.id}`} key={ticket.id}> View  </Link>
               </td>
             </tr>
           ))}

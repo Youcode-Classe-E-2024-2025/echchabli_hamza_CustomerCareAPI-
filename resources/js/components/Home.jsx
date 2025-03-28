@@ -7,6 +7,16 @@ const Home = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+
+  const back = {
+    backgroundColor: '#4CAF50',
+    color: 'white',
+    padding: '10px 20px',
+    border: 'none',
+    borderRadius: '5px',
+    cursor: 'pointer',
+  };
+
   const [filters, setFilters] = useState({
     status: 'open',
     sort_direction: 'desc'
@@ -14,7 +24,7 @@ const Home = () => {
 
   const [pagination, setPagination] = useState({
     currentPage: 1,
-    perPage: 2,
+    perPage: 6,
     total: 0,
     lastPage: 0
   });
@@ -56,28 +66,28 @@ const Home = () => {
     }
   };
   const handleAssignTicket = async () => {
-    setAssigning(true); // Show loading state for the button
+    setAssigning(true); 
 
     try {
-      // Call the API to assign an agent to the ticket
+      
       const response = await fetch(`/tickets/${id}/assign`, {
-        method: 'PUT', // Assuming PUT method to update ticket assignment
+        method: 'PUT', 
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ agent_id: 1 }), // Assuming agent ID is 1 for example
+        body: JSON.stringify({ agent_id: 1 }),
       });
       const data = await response.json();
 
       if (response.ok) {
-        setTicket(data.ticket); // Update ticket data with the new agent_id
+        setTicket(data.ticket);
       } else {
         setError(data.message);
       }
     } catch (err) {
       setError('Error assigning the ticket');
     } finally {
-      setAssigning(false); // Hide loading state
+      setAssigning(false);
     }
   };
 
@@ -151,7 +161,7 @@ const Home = () => {
                       </td>
                       <td>{new Date(ticket.created_at).toLocaleDateString()}</td>
 
-                      <td><Link to={`/details/${ticket.id}`} key={ticket.id}> View  </Link></td>
+                      <td><Link className='status' style={back} to={`/details/${ticket.id}`} key={ticket.id}> View  </Link></td>
 
                     </tr>
                   ))}

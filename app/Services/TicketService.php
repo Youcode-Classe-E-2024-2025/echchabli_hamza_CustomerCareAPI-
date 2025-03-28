@@ -76,7 +76,9 @@ class TicketService
 
         if ($ticket) {
             $ticket->progress = $progress;
-            return $ticket->save();
+            if ($ticket->save()) {
+                return $ticket->refresh(); 
+            }
         }
 
         return false;
@@ -112,18 +114,14 @@ class TicketService
     {
         return $this->ticketModel
     ->join('users', 'users.id', '=', 'tickets.owner_id')
-    ->where('tickets.owner_id', $agentId)
+    ->where('tickets.agent_id', $agentId)
     ->select('tickets.*', 'users.name as agent_name') 
     ->get()
     ->toArray();
 
     }
 
-    public function getAllStatusOpen()
-    {
-        return $this->ticketModel->where('status', 'open')->get()->toArray();
-    }
-
+  
 
 
     // public function getPaginatedTickets($perPage = 3, $status = null, $sortDirection = 'desc')

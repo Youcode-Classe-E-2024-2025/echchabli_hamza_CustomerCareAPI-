@@ -512,12 +512,12 @@
             }
         },
         "/api/tickets/{id}/progress": {
-            "post": {
+            "put": {
                 "tags": [
                     "Tickets"
                 ],
                 "summary": "Update ticket progress",
-                "operationId": "646aea6e0c02855a42e0447df558c9b4",
+                "operationId": "05b28b145aa2160dd206db5056439afb",
                 "parameters": [
                     {
                         "name": "id",

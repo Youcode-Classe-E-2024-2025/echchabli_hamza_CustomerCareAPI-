@@ -1,11 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../../css/Dash.css';
+import { Link } from 'react-router-dom';
+
 
 const MyTickets = ({ clientId  ,token}) => {
   const [tickets, setTickets] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const back = {
+    backgroundColor: '#4CAF50',
+    color: 'white',
+    padding: '10px 20px',
+    border: 'none',
+    borderRadius: '5px',
+    cursor: 'pointer',
+  };
 
   useEffect(() => {
     const fetchTickets = async () => {
@@ -38,13 +49,9 @@ const MyTickets = ({ clientId  ,token}) => {
     fetchTickets();
   }, [clientId]);
 
-  const handleViewTicket = (ticketId) => {
-    console.log(`View ticket with ID: ${ticketId}`);
-  };
+  
 
-  const handleCancelTicket = (ticketId) => {
-    console.log(`Cancel ticket with ID: ${ticketId}`);
-  };
+  
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
@@ -71,14 +78,13 @@ const MyTickets = ({ clientId  ,token}) => {
                   {ticket.status}
                 </span>
               </td>
-              <td>{ticket.progress}</td>
+              
+              <ProgressSelect ticketId={ticket.id} initialProgress={ticket.progress} />
+              
               <td>
-                <button onClick={() => handleViewTicket(ticket.id)} className="view-ticket-btn">
-                  View
-                </button>
-                <button onClick={() => handleCancelTicket(ticket.id)} className="cancel-ticket-btn">
-                  Cancel
-                </button>
+                
+                <Link className='status' style={back} to={`/details/${ticket.id}`} key={ticket.id}> View  </Link>
+            
               </td>
             </tr>
           ))}
@@ -87,6 +93,45 @@ const MyTickets = ({ clientId  ,token}) => {
     </div>
   );
 };
+
+
+
+const ProgressSelect = ({ ticketId, initialProgress }) => {
+  const [progress, setProgress] = useState(initialProgress);
+
+  const handleProgressChange = async (newProgress) => {
+    setProgress(newProgress);
+
+    try {
+      const response = await fetch(`/api/tickets/${ticketId}/progress`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+        },
+        body: JSON.stringify({ progress: newProgress }),
+      });
+
+
+    } catch (error) {
+      console.error('Error updating progress:', error);
+    }
+  };
+
+  return (
+   
+     
+      <td>
+        <select value={progress} onChange={(e) => handleProgressChange(e.target.value)}>
+          <option value="inprogress">In Progress</option>
+          <option value="done">Done</option>
+        </select>
+      </td>
+    
+  );
+};
+
+
 
 const Dash = () => {
   const navigate = useNavigate();
@@ -154,14 +199,9 @@ const Dash = () => {
             className={activeTab === 'myTickets' ? 'active' : ''}
             onClick={() => setActiveTab('myTickets')}
           >
-            LLLLLLLL {userData.role +' new' + userData.name }
+            tickets (tasks)
           </li>
-          <li
-            className={activeTab === 'dashboard' ? 'active' : ''}
-            onClick={() => setActiveTab('dashboard')}
-          >
-            Dashboard
-          </li>
+         
         </ul>
         <div className="user-info">
           <span>{userData.name}</span>
