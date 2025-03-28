@@ -24,8 +24,8 @@ class ResponseStoreRequest extends FormRequest
         return [
             'response' => 'required|string',
             'ticket_id' => 'required|exists:tickets,id',
-            'from_id' => 'required|exists:users,id',
-            'to_id' => 'required|exists:users,id',
+            'user_id' => 'required|exists:users,id',
+           
         ];
     }
 }

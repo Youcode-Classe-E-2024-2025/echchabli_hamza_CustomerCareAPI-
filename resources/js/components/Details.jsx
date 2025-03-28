@@ -1,5 +1,6 @@
 import { useParams } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
+import Chat from './Chat.jsx';
 import '../../css/details.css';
 
 const Details = () => {
@@ -103,9 +104,16 @@ const Details = () => {
         {assigning ? 'Assigning...' : 'Assign Ticket'}
       </button>
 
+    <div>
+       <Chat ticketId={id}/>
+   </div>
 
     
+
   </div>
+
+
+
   );
 };
 

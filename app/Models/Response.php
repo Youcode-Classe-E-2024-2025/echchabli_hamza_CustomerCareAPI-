@@ -12,7 +12,7 @@ class Response extends Model
     
     use HasFactory;
 
-    protected $fillable = ['response', 'ticket_id', 'from_id', 'to_id'];
+    protected $fillable = ['response', 'ticket_id', 'user_id'];
 
     
     public function ticket()

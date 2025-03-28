@@ -48,9 +48,6 @@ Route::get('/tickets', [TicketController::class, 'getAllTickets']);
 Route::middleware('auth:sanctum')->group(function () {
 Route::post('/responses', [ResponseController::class, 'store']);
 Route::get('/responses/ticket/{ticketId}', [ResponseController::class, 'getByTicketId']);
-Route::get('/responses/from/{fromId}', [ResponseController::class, 'getByFromId']);
-Route::get('/responses/to/{toId}', [ResponseController::class, 'getByToId']);
-
 
 
 });

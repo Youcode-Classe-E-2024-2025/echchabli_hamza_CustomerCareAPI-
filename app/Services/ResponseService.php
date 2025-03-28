@@ -15,24 +15,25 @@ class ResponseService
 
     public function createResponse(array $responseData)
     {
+        
         return $this->response->create($responseData);
     }
 
+    // public function getResponsesByTicketId(int $ticketId)
+    // {
+    //     return $this->response->where('ticket_id', $ticketId)->get();
+    // }
+
+
     public function getResponsesByTicketId(int $ticketId)
     {
-        return $this->response->where('ticket_id', $ticketId)->get();
+        return $this->response
+            ->where('ticket_id', $ticketId)
+            ->join('users', 'responses.user_id', '=', 'users.id')
+            ->select('responses.*', 'users.name as user_name')
+            ->get();
     }
+    
 
-
-    public function getResponseFromId(int $FromId){
-
-        return $this->response->where('from_id', $FromId)->get();
-
-    }
-
-    public function getResponseByToId(int $ToId){
-
-        return $this->response->where('to_id', $ToId)->get();
-
-    }
+   
 }
