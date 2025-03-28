@@ -103,12 +103,13 @@ const Details = () => {
       >
         {assigning ? 'Assigning...' : 'Assign Ticket'}
       </button>
+ <div>
+  {parseInt(localStorage.getItem('userId')) === ticket?.owner_id ||
+   parseInt(localStorage.getItem('userId')) === ticket?.agent_id ? (
+    <Chat ticketId={ticket?.id} />
+  ) : null}
+</div>
 
-    <div>
-       <Chat ticketId={id}/>
-   </div>
-
-    
 
   </div>
 
