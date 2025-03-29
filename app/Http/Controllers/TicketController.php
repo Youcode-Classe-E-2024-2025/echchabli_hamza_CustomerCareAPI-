@@ -345,51 +345,65 @@ class TicketController extends Controller
     
 
 
-     /**
-     * @OA\Get(
-     *     path="/api/tickets/open",
-     *     summary="Get all tickets with status open",
-     *     tags={"Tickets"},
-     *     security={{"sanctum": {}}},
-     *     @OA\Response(response=200, description="Tickets retrieved successfully",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="tickets", type="array", items=@OA\Items(type="object"))
-     *         )
-     *     )
-     * )
-     */
-
-
-    public function getAllStatusOpen()
-    {
-        $tickets = $this->ticketService->getAllStatusOpen();
-
-        return response()->json([
-            'tickets' => $tickets,
-        ]);
-    }
+   
 
 
 
-     /**
-     * @OA\Get(
-     *     path="/api/tickets",
-     *     summary="Get all tickets ",
-     *     tags={"Tickets"},
-     *     security={{"sanctum": {}}},
-     *     @OA\Response(response=200, description="Tickets retrieved successfully",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="tickets", type="array", items=@OA\Items(type="object"))
-     *         )
-     *     )
-     * )
-     */
+   /**
+ * @OA\Get(
+ *     path="/api/tickets",
+ *     summary="Get all tickets",
+ *     tags={"Tickets"},
+ *     security={{"sanctum": {}}},
+ *     @OA\Parameter(
+ *         name="per_page",
+ *         in="query",
+ *         required=false,
+ *         description="Number of tickets per page",
+ *         @OA\Schema(type="integer", default=3)
+ *     ),
+ *     @OA\Parameter(
+ *         name="status",
+ *         in="query",
+ *         required=false,
+ *         description="Filter tickets by status",
+ *         @OA\Schema(type="string")
+ *     ),
+ *     @OA\Parameter(
+ *         name="sort_direction",
+ *         in="query",
+ *         required=false,
+ *         description="Sort direction: asc or desc",
+ *         @OA\Schema(type="string", enum={"asc", "desc"}, default="desc")
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Tickets retrieved successfully",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="tickets", type="object",
+ *                 @OA\Property(property="data", type="array",
+ *                     @OA\Items(type="object",
+ *                         @OA\Property(property="id", type="integer"),
+ *                         @OA\Property(property="title", type="string"),
+ *                         @OA\Property(property="status", type="string"),
+ *                         @OA\Property(property="created_at", type="string", format="date-time"),
+ *                         @OA\Property(property="updated_at", type="string", format="date-time")
+ *                     )
+ *                 ),
+ *                 @OA\Property(property="current_page", type="integer"),
+ *                 @OA\Property(property="last_page", type="integer"),
+ *                 @OA\Property(property="total", type="integer")
+ *             )
+ *         )
+ *     )
+ * )
+ */
 
      public function getAllTickets(Request $request)
 {
     $perPage = $request->input('per_page', 3);
     $status = $request->input('status', null);
-    $sortDirection = $request->input('sort_direction', 'desc'); // 'asc' or 'desc'
+    $sortDirection = $request->input('sort_direction', 'desc'); 
 
     $tickets = $this->ticketService->getPaginatedTickets($perPage, $status, $sortDirection);
 
