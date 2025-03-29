@@ -50,6 +50,12 @@ npm install
 ```bash
 php artisan l5-swagger:generate
 ```
+
+```bash
+ npm run dev
+```
+
+
 Démarrer le serveur :
 ```bash
 php artisan serve
