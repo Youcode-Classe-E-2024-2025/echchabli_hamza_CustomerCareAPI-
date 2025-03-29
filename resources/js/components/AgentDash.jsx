@@ -72,7 +72,7 @@ const MyTickets = ({ clientId  ,token}) => {
           {tickets.map((ticket) => (
             <tr key={ticket.id}>
               <td>{ticket.agent_name!=null ? ticket.agent_name : 'empty'}</td>
-              <td>{ticket.title}</td>
+              <td dangerouslySetInnerHTML={{ __html: ticket.title || 'N/A' }}></td>
               <td>
                 <span className={`status-badge ${ticket.status.toLowerCase().replace(' ', '-')}`}>
                   {ticket.status}

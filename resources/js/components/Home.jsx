@@ -152,8 +152,9 @@ const Home = () => {
                 <tbody>
                   {tickets.map(ticket => (
                     <tr key={ticket.id}>
-                      <td>{ticket.title || 'N/A'}</td>
-                      <td>{ticket.description || 'N/A'}</td>
+                     <td dangerouslySetInnerHTML={{ __html: ticket.title || 'N/A' }}></td>
+<td dangerouslySetInnerHTML={{ __html: ticket.description || 'N/A' }}></td>
+
                       <td>
                         <span className={`status ${ticket.status}`}>
                           {ticket.status}

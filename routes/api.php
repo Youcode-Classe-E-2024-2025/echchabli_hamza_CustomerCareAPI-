@@ -36,7 +36,7 @@ Route::middleware('auth:sanctum')->group(function () {
  
     Route::put('/tickets/{id}/status', [TicketController::class, 'updateStatus']);
     Route::put('/tickets/{id}/progress', [TicketController::class, 'updateProgress']);
-    Route::delete('/tickets/{id}', [TicketController::class, 'destroy']);
+    
     
     Route::get('/tickets/client/{clientId}', [TicketController::class, 'getClientTickets']);
     Route::get('/tickets/agent/{agentId}', [TicketController::class, 'getAgentTickets']);

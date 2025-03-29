@@ -65,11 +65,16 @@ const AuthForm = () => {
     
     localStorage.setItem('name', data.user.name);
     localStorage.setItem('email', data.user.email);
-    if (data.role=='client') {
+    if (data.user.role=='client') {
         navigate('/Dash'); 
-    } else {
+    } else if(data.user.role=='client'){
 
       navigate('/AgentDash'); 
+      
+    }
+    else {
+
+      navigate('/AdminDash'); 
       
     }
     

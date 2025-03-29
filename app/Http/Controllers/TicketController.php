@@ -51,9 +51,13 @@ class TicketController extends Controller
      {
          try {
             
-             $data = $request->validated();
-     
-             $ticket = $this->ticketService->createTicket($data);
+            $data = $request->validated();
+
+              $data['title'] = e($data['title']);  
+               $data['description'] = e($data['description']);  
+
+        $ticket = $this->ticketService->createTicket($data);
+
               
 
              $this->activityService->addActivity($ticket->id, $data['owner_id'], 'created');
@@ -271,45 +275,10 @@ class TicketController extends Controller
 
 
 
-    /**
-     * @OA\Delete(
-     *     path="/api/tickets/{id}",
-     *     summary="Delete a ticket",
-     *     tags={"Tickets"},
-     *     security={{"sanctum": {}}},
-     *     @OA\Parameter(
-     *         name="id",
-     *         in="path",
-     *         required=true,
-     *         @OA\Schema(type="integer")
-     *     ),
-     *     @OA\Response(response=200, description="Ticket deleted successfully",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="message", type="string", example="Ticket deleted successfully")
-     *         )
-     *     ),
-     *     @OA\Response(response=404, description="Ticket not found or deletion failed")
-     * )
-     */
+  
 
 
-
-    public function destroy(int $id)
-    {
-        $deleted = $this->ticketService->deleteTicket($id);
-
-        if ($deleted) {
-            $this->activityService->addActivity($ticket->id, $request->user()->id, 'deleted');
-            return response()->json([
-                'message' => 'Ticket deleted successfully',
-            ]);
-        }
-
-        return response()->json([
-            'message' => 'Ticket not found or deletion failed',
-        ], 404);
-    }
-
+  
     
      /**
      * @OA\Get(

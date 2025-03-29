@@ -53,7 +53,7 @@ const AdminDash = () => {
           <tbody>
             {ticketActivities.map((activity) => (
               <tr key={activity.id}>
-                <td>{activity.title}</td>
+                 <td dangerouslySetInnerHTML={{ __html: activity.title|| 'N/A' }}></td>
                 <td>{activity.action}</td>
                 <td>{activity.user_name}</td>
                 <td>{new Date(activity.created_at).toLocaleString()}</td>

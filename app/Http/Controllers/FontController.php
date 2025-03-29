@@ -8,6 +8,6 @@ class FontController extends Controller
 {
     public function index()
     {
-        return view('app'); // Renders the 'home.blade.php' template
+        return view('app'); 
     }
 }
