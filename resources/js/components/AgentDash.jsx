@@ -220,12 +220,10 @@ const Dash = () => {
                 onClick={() => setShowAddTicket(true)} 
                 className="add-ticket-btn"
               >
-                Add Ticket
+                arffaz
               </button>
             )}
-            <button onClick={handleLogout} className="logout-button">
-              Logout
-            </button>
+           
           </div>
         </header>
 

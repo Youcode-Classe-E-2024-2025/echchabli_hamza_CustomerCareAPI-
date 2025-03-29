@@ -51,14 +51,18 @@ const AuthForm = () => {
 
       if (endpoint === '/api/register') setActiveTab('login');
 
-      // console.log(data.token);
+      // console.log(data.user.role);
 
       
       
 
       localStorage.setItem('authToken', data.token);
+      // console.log(data.token);
+      
      localStorage.setItem('userId', data.user.id);      
-    localStorage.setItem('userRole', data.role);
+    localStorage.setItem('userRole', data.user.role);
+    // console.log(data.role + 'qfrfzrfzefzefazefazr');
+    
     localStorage.setItem('name', data.user.name);
     localStorage.setItem('email', data.user.email);
     if (data.role=='client') {

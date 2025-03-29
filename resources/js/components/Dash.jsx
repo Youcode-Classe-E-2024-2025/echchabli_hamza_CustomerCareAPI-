@@ -149,10 +149,10 @@ const Dash = () => {
   //   ]);
   // }, [navigate]);
 
-  const handleLogout = () => {
-    localStorage.clear();
-    navigate('/login');
-  };
+  // const handleLogout = () => {
+  //   localStorage.clear();
+  //   navigate('/login');
+  // };
 
   const Dashboard = () => (
     <div className="dashboard-content">
@@ -243,9 +243,9 @@ const Dash = () => {
                 Add Ticket
               </button>
             )}
-            <button onClick={handleLogout} className="logout-button">
+            {/* <button onClick={handleLogout} className="logout-button">
               Logout
-            </button>
+            </button> */}
           </div>
         </header>
 

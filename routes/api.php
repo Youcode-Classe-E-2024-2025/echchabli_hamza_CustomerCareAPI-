@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\ResponseController;
+use App\Http\Controllers\ActivitieController;
+
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
@@ -48,6 +50,11 @@ Route::get('/tickets', [TicketController::class, 'getAllTickets']);
 Route::middleware('auth:sanctum')->group(function () {
 Route::post('/responses', [ResponseController::class, 'store']);
 Route::get('/responses/ticket/{ticketId}', [ResponseController::class, 'getByTicketId']);
+
+
+
+Route::get('/activity', [ActivitieController::class, 'getTicktActiv']);
+
 
 
 });

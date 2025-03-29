@@ -22,4 +22,23 @@ class ActivitieService
             'action' => $action,
         ]);
     }
+
+    public function getTicketActivities(){
+
+        // return $ticketID ;
+
+
+        return $this->activityModel
+        ->from('activities')
+        ->join('tickets' , 'tickets.id' , '=' , 'activities.ticket_id')
+        ->join('users', 'activities.user_id', '=', 'users.id')
+        ->select([
+            'activities.*',
+            'users.name as user_name',
+            'tickets.title as title' 
+        ])
+        ->get();
+    }
+
+
 }

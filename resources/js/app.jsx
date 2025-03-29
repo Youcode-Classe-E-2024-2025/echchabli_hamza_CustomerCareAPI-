@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './components/Home.jsx';
 import Dash from './components/Dash.jsx';
 import AgentDash from './components/AgentDash.jsx';
+import AdminDash from './components/AdminDash.jsx';
 import Details from './components/Details.jsx';
 import Header from './components/Header.jsx';
 import AuthForm from './components/AuthForm.jsx';
@@ -20,7 +21,12 @@ const App = () => {
         <Route path="/Dash" element={<Dash />} />
         <Route path="/agentDash" element={<AgentDash />} />
 
+        <Route path="/adminDash" element={<AdminDash />} />
+
+
         <Route path="/details/:id" element={<Details />} />
+
+
 
         <Route path="/login" element={<AuthForm />} />
       </Routes>
